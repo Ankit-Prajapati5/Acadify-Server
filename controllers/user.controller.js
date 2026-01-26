@@ -7,13 +7,13 @@ import {
 } from "../utils/cloudinary.js";
 import { getCloudinaryPublicId } from "../utils/getCloudinaryPublicId.js";
 import { Otp } from "../models/otp.model.js";
-import nodemailer from "nodemailer";
 import fs from "fs";
 
 const domains = JSON.parse(
   fs.readFileSync("./node_modules/disposable-email-domains/index.json", "utf-8")
 );
-
+import { Resend } from "resend";
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /* ================= REGISTER ================= */
 export const register = async (req, res) => {
@@ -83,7 +83,6 @@ export const register = async (req, res) => {
 
 export const sendOtp = async (req, res) => {
   try {
-    // 🔹 normalize email
     let email =
       typeof req.body.email === "object"
         ? req.body.email.email
@@ -95,7 +94,6 @@ export const sendOtp = async (req, res) => {
 
     email = email.toLowerCase().trim();
 
-    // 🔹 format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({
@@ -104,7 +102,6 @@ export const sendOtp = async (req, res) => {
       });
     }
 
-    // 🔹 disposable email block
     const domain = email.split("@")[1];
     if (domains.includes(domain)) {
       return res.status(400).json({
@@ -113,41 +110,33 @@ export const sendOtp = async (req, res) => {
       });
     }
 
-    // 🔹 prevent OTP spam (cooldown)
-    const existingOtp = await Otp.findOne({ email });
-    // if (existingOtp) {
-    //   return res.status(429).json({
-    //     success: false,
-    //     message: "OTP already sent. Please wait 5 minutes.",
-    //   });
-    // }
-
-    // 🔹 generate + hash OTP
     const rawOtp = Math.floor(100000 + Math.random() * 900000).toString();
     const hashedOtp = await bcrypt.hash(rawOtp, 10);
 
     await Otp.create({ email, otp: hashedOtp });
 
-    // 🔹 send email
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    await transporter.sendMail({
-      from: `"Acadify Support" <${process.env.EMAIL_USER}>`,
+    // 🔥 RESEND EMAIL SEND
+    await resend.emails.send({
+      from: "onboarding@resend.dev", // free testing sender
       to: email,
       subject: "Verification Code - Acadify",
-      text: `Your OTP is: ${rawOtp}. It expires in 5 minutes.`,
+      html: `
+        <div style="font-family: Arial; padding: 20px;">
+          <h2>Your OTP Code</h2>
+          <p>Your verification code is:</p>
+          <h1 style="letter-spacing: 5px;">${rawOtp}</h1>
+          <p>This code will expire in 5 minutes.</p>
+        </div>
+      `,
     });
 
+console.log("Sending OTP to:", email);
     return res.status(200).json({
       success: true,
       message: "OTP sent successfully",
     });
+
+
   } catch (error) {
     console.error("SEND OTP ERROR:", error);
     return res.status(500).json({

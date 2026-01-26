@@ -1,26 +1,21 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 export const sendContactEmail = async (req, res) => {
   const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
-    return res.status(400).json({ message: "Sari fields bharna zaroori hai!" });
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required",
+    });
   }
 
   try {
-    // 1. Transporter setup (Gmail use kar rahe ho toh)
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER, // Aapka email
-        pass: process.env.EMAIL_PASS, // Gmail App Password
-      },
-    });
-
-    // 2. Email Options
-    const mailOptions = {
-      from: email,
-      to: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: "onboarding@resend.dev", // free plan sender
+      to: process.env.EMAIL_USER, // tumhara email jaha message receive hoga
       subject: `New Message from ${name} (Acadify Contact Form)`,
       html: `
         <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee;">
@@ -32,14 +27,18 @@ export const sendContactEmail = async (req, res) => {
           <p>${message}</p>
         </div>
       `,
-    };
+    });
 
-    // 3. Send Email
-    await transporter.sendMail(mailOptions);
+    res.status(200).json({
+      success: true,
+      message: "Email sent successfully!",
+    });
 
-    res.status(200).json({ success: true, message: "Email sent successfully!" });
   } catch (error) {
-    console.error("Email error:", error);
-    res.status(500).json({ message: "Email bhejne mein error aayi." });
+    console.error("Contact Email Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to send email",
+    });
   }
 };
