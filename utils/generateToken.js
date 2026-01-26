@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
+import { CONFIG } from "../config";
 
 const generateToken = (res, payload, message = "Login successful") => {
-  if (!process.env.JWT_SECRET) {
+  if (!CONFIG.jwtSecret) {
     throw new Error("JWT_SECRET not configured");
   }
 
@@ -11,11 +12,11 @@ const generateToken = (res, payload, message = "Login successful") => {
       userId: payload.userId,
       role: payload.role,
     },
-    process.env.JWT_SECRET,
+    CONFIG.jwtSecret,
     { expiresIn: "7d" }
   );
 
-  const isProduction = process.env.NODE_ENV === "production";
+  const isProduction = CONFIG.nodeEnv === "production";
 
   res.cookie("token", token, {
        httpOnly: true,

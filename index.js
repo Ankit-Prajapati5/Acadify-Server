@@ -15,8 +15,12 @@ import courseProgressRoute from "./routes/courseProgress.route.js";
 import purchaseRoute from "./routes/purchase.route.js";
 import contactRoute from "./routes/contact.route.js";
 import roadmapRoute from "./routes/roadmap.route.js";
+import { CONFIG } from "./config.js";
 
-dotenv.config();
+dotenv.config({
+  path: process.env.NODE_ENV === "production" ? ".env.production" : ".env.local",
+});
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,14 +41,9 @@ app.use(
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-const allowedOrigins = [
-  process.env.CLIENT_URL || "http://localhost:5173",
-  process.env.NETLIFY_URL || "https://acadifyx.netlify.app",
-];
-
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: CONFIG.clientUrl,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
