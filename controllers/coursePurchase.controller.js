@@ -4,8 +4,8 @@ import { Course } from "../models/course.model.js";
 import CoursePurchase from "../models/coursePurchase.model.js";
 
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_API_KEY,
-  key_secret: process.env.RAZORPAY_SECRET_KEY,
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 /* =====================================================

@@ -17,9 +17,10 @@ import contactRoute from "./routes/contact.route.js";
 import roadmapRoute from "./routes/roadmap.route.js";
 import { CONFIG } from "./config.js";
 
-dotenv.config({
-  path: process.env.NODE_ENV === "production" ? ".env.production" : ".env.local",
-});
+
+// Local ke liye
+dotenv.config();
+
 
 
 const app = express();
