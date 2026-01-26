@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { CONFIG } from "../config";
+import { CONFIG } from "../../config.js";
 
 const generateToken = (res, payload, message = "Login successful") => {
   if (!CONFIG.jwtSecret) {
