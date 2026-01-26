@@ -37,9 +37,14 @@ app.use(
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
+const allowedOrigins = [
+  process.env.CLIENT_URL || "http://localhost:5173",
+  process.env.NETLIFY_URL || "https://acadifyx.netlify.app",
+];
+
 app.use(
   cors({
-    origin: [process.env.NETLIFY_URL,process.env.CLIENT_URL],
+    origin: allowedOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })

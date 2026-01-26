@@ -115,12 +115,12 @@ export const sendOtp = async (req, res) => {
 
     // 🔹 prevent OTP spam (cooldown)
     const existingOtp = await Otp.findOne({ email });
-    if (existingOtp) {
-      return res.status(429).json({
-        success: false,
-        message: "OTP already sent. Please wait 5 minutes.",
-      });
-    }
+    // if (existingOtp) {
+    //   return res.status(429).json({
+    //     success: false,
+    //     message: "OTP already sent. Please wait 5 minutes.",
+    //   });
+    // }
 
     // 🔹 generate + hash OTP
     const rawOtp = Math.floor(100000 + Math.random() * 900000).toString();
