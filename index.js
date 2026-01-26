@@ -39,7 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL,process.env.NETLIFY_URL],
+    origin: [process.env.NETLIFY_URL,process.env.CLIENT_URL],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
