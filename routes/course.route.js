@@ -84,12 +84,19 @@ router.get("/:id/lecture", isAuthenticated, getCourseLecture);
 router.get("/:id/lecture/:lectureId", isAuthenticated, getLectureById);
 
 // EDIT LECTURE (video / free toggle)
+// router.put(
+//   "/:id/lecture/:lectureId",
+//   isAuthenticated,
+//   upload.single("video"), // 🔥 video file yahin aayegi
+//   editLecture
+// );
+
 router.put(
   "/:id/lecture/:lectureId",
   isAuthenticated,
-  upload.single("video"), // 🔥 video file yahin aayegi
   editLecture
 );
+
 
 
 // DELETE LECTURE

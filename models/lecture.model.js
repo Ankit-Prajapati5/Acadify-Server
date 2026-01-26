@@ -9,15 +9,15 @@ const lectureSchema = new mongoose.Schema(
     },
     // Cloudinary or S3 Video URL 
     // Security Note: Consider signed URLs or private access in a real production environment
-    videoUrl: {
-      type: String,
-      default: "",
-    },
-    // Cloudinary asset identifier for deletion/updates
-    publicId: {
-      type: String,
-      default: "",
-    },
+    // videoUrl: {
+    //   type: String,
+    //   default: "",
+    // },
+    // // Cloudinary asset identifier for deletion/updates
+    // publicId: {
+    //   type: String,
+    //   default: "",
+    // },
     duration: {
       type: Number, // Store in seconds for easier formatting on the frontend
       default: 0,
@@ -32,6 +32,12 @@ const lectureSchema = new mongoose.Schema(
       ref: "Course",
       required: true,
     },
+
+    videoId: {
+  type: String
+ 
+}
+
   },
   { timestamps: true }
 );

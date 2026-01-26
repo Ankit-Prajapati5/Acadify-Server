@@ -1,5 +1,7 @@
-import express from "express";
 import dotenv from "dotenv";
+// Local ke liye
+dotenv.config();
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectDB from "./database/db.js";
@@ -18,8 +20,7 @@ import roadmapRoute from "./routes/roadmap.route.js";
 import { CONFIG } from "./config.js";
 
 
-// Local ke liye
-dotenv.config();
+
 
 
 

@@ -174,8 +174,13 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    return res.status(500).json({ success: false, message: "Failed to login user" });
-  }
+  console.error("LOGIN ERROR:", error);  // 👈 ADD THIS
+  res.status(500).json({
+    success: false,
+    message: error.message || "Failed to login user"
+  });
+}
+
 };
 
 /* ================= LOGOUT ================= */
