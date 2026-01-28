@@ -192,7 +192,8 @@ export const logout = async (req, res) => {
         httpOnly: true, 
         expires: new Date(0), 
         sameSite: "lax",
-        secure: process.env.NODE_ENV === "production" // Production में secure true रखें
+        path: "/", // 👈 यह बहुत जरूरी है ताकि कुकी हर जगह से डिलीट हो
+        secure: process.env.NODE_ENV === "production"
       })
       .json({ success: true, message: "User logged out successfully" });
   } catch (error) {
