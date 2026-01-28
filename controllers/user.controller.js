@@ -191,16 +191,15 @@ export const logout = async (req, res) => {
       .cookie("token", "", { 
         httpOnly: true, 
         expires: new Date(0), 
-        sameSite: "lax",
-        path: "/", // 👈 यह बहुत जरूरी है ताकि कुकी हर जगह से डिलीट हो
-        secure: process.env.NODE_ENV === "production"
+        sameSite: "none", // 👈 "lax" की जगह "none" करें (Cross-site के लिए ज़रूरी)
+        secure: true,      // 👈 Vercel/Production के लिए यह true होना ही चाहिए
+        path: "/", 
       })
       .json({ success: true, message: "User logged out successfully" });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Failed to logout user" });
   }
 };
-
 /* ================= GET PROFILE ================= */
 export const getUserProfile = async (req, res) => {
   try {
