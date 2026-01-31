@@ -59,7 +59,7 @@ Format:
 
     const data = await response.json();
 
-    console.log("AI RAW:", data);
+    console.log("DEBUG RESPONSE:", data); 
 
     if (!data?.choices?.length) {
       return res.status(500).json({
@@ -90,5 +90,4 @@ Format:
     res.status(500).json({ message: "Quiz generation failed" });
   }
 };
-console.log("DEBUG RESPONSE:", data);
-console.log("KEY FULL CHECK:", process.env.OPENROUTER_API_KEY);
+console.log("DEBUG RESPONSE:", data);console.log("KEY FULL CHECK:", process.env.OPENROUTER_API_KEY);
