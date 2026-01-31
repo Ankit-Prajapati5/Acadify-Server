@@ -1,5 +1,30 @@
 import mongoose from "mongoose";
 
+const questionSchema = new mongoose.Schema(
+  {
+    question: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    options: {
+      type: [String],
+      required: true,
+      validate: {
+        validator: function (val) {
+          return val.length === 4;
+        },
+        message: "Exactly 4 options required",
+      },
+    },
+    correctAnswer: {
+      type: String,
+      required: true,
+    },
+  },
+  { _id: false }
+);
+
 const lectureSchema = new mongoose.Schema(
   {
     lectureTitle: {
@@ -7,26 +32,17 @@ const lectureSchema = new mongoose.Schema(
       required: [true, "Lecture title is required"],
       trim: true,
     },
-    // Cloudinary or S3 Video URL 
-    // Security Note: Consider signed URLs or private access in a real production environment
-    // videoUrl: {
-    //   type: String,
-    //   default: "",
-    // },
-    // // Cloudinary asset identifier for deletion/updates
-    // publicId: {
-    //   type: String,
-    //   default: "",
-    // },
+
     duration: {
-      type: Number, // Store in seconds for easier formatting on the frontend
+      type: Number,
       default: 0,
     },
+
     isPreviewFree: {
       type: Boolean,
       default: false,
     },
-    // Reference to the parent Course
+
     course: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
@@ -34,10 +50,20 @@ const lectureSchema = new mongoose.Schema(
     },
 
     videoId: {
-  type: String
- 
-}
+      type: String,
+    },
 
+    // 🔥 AI Generated Quiz Section
+    quiz: {
+      title: {
+        type: String,
+        trim: true,
+      },
+      questions: {
+        type: [questionSchema],
+        default: [],
+      },
+    },
   },
   { timestamps: true }
 );

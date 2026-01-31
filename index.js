@@ -17,7 +17,7 @@ import courseProgressRoute from "./routes/courseProgress.route.js";
 import purchaseRoute from "./routes/purchase.route.js";
 import contactRoute from "./routes/contact.route.js";
 import roadmapRoute from "./routes/roadmap.route.js";
-import { CONFIG } from "./config.js";
+import quizRoutes from "./routes/quiz.route.js";
 
 
 
@@ -84,6 +84,8 @@ app.use("/api/v1/course", streamRoute);
 app.use("/api/v1/course", purchaseRoute);
 app.use("/api/v1/contact", contactRoute);
 app.use("/api/v1/roadmap", roadmapRoute);
+app.use("/api/v1/quiz", quizRoutes);
+
 
 
 /**

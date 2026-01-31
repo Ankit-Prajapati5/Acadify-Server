@@ -173,21 +173,31 @@ export const getLectureById = async (req, res) => {
 
 export const editLecture = async (req, res) => {
   try {
-    const { lectureTitle, isPreviewFree, videoId } = req.body;
+    const { lectureTitle, isPreviewFree, videoId, quiz } = req.body;
     const { lectureId } = req.params;
 
     const lecture = await Lecture.findById(lectureId);
 
-    if (!lecture)
+    if (!lecture) {
       return res.status(404).json({
         success: false,
         message: "Lecture not found",
       });
+    }
 
-    lecture.lectureTitle = lectureTitle || lecture.lectureTitle;
-    lecture.isPreviewFree =
-      isPreviewFree ?? lecture.isPreviewFree;
-    lecture.videoId = videoId || lecture.videoId;
+    // Basic fields
+    if (lectureTitle) lecture.lectureTitle = lectureTitle;
+    if (typeof isPreviewFree !== "undefined")
+      lecture.isPreviewFree = isPreviewFree;
+    if (videoId) lecture.videoId = videoId;
+
+    // 🔥 Quiz update (AI generated or manual)
+    if (quiz && quiz.questions?.length > 0) {
+      lecture.quiz = {
+        title: quiz.title || "Untitled Quiz",
+        questions: quiz.questions,
+      };
+    }
 
     await lecture.save();
 
@@ -197,12 +207,14 @@ export const editLecture = async (req, res) => {
       lecture,
     });
   } catch (error) {
+    console.log("EDIT LECTURE ERROR:", error);
     res.status(500).json({
       success: false,
       message: "Server error",
     });
   }
 };
+
 
 
 
