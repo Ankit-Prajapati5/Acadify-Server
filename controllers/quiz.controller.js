@@ -13,9 +13,12 @@ export const generateQuiz = async (req, res) => {
         headers: {
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
+          "HTTP-Referer": "https://acadify-server.onrender.com",
+          "X-Title": "Acadify",
         },
         body: JSON.stringify({
-         model: "openai/gpt-4o-mini",
+          model: "openai/gpt-4o-mini",
+          temperature: 0.9,
           messages: [
             {
               role: "system",
@@ -44,8 +47,6 @@ Format:
     }
   ]
 }`,
-temperature: 0.9,
-
             },
             {
               role: "user",
@@ -53,7 +54,7 @@ temperature: 0.9,
             },
           ],
         }),
-      }
+      },
     );
 
     const data = await response.json();
@@ -69,18 +70,19 @@ temperature: 0.9,
     let content = data.choices[0].message.content;
 
     if (content.includes("```")) {
-      content = content.replace(/```json/g, "")
-                       .replace(/```/g, "")
-                       .trim();
+      content = content
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
     }
 
     const parsed = JSON.parse(content);
     parsed.questions = parsed.questions.map((q) => {
-  if (!q.options.includes(q.correctAnswer)) {
-    q.correctAnswer = q.options[0]; // fallback safety
-  }
-  return q;
-});
+      if (!q.options.includes(q.correctAnswer)) {
+        q.correctAnswer = q.options[0]; // fallback safety
+      }
+      return q;
+    });
 
     res.json(parsed);
   } catch (error) {
