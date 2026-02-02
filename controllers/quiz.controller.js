@@ -90,4 +90,3 @@ Format:
     res.status(500).json({ message: "Quiz generation failed" });
   }
 };
-console.log("KEY FULL CHECK:", process.env.OPENROUTER_API_KEY);

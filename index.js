@@ -67,6 +67,10 @@ app.use(cookieParser());
  */
 connectDB();
  app.get('/', (req, res) => { res.send('Hello, Express.js server is running!'); });
+ app.head("/", (req, res) => {
+  res.sendStatus(200);
+});
+
 /**
  * 🚏 API Routes
  */
