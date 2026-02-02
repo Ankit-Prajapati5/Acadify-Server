@@ -117,7 +117,7 @@ export const sendOtp = async (req, res) => {
 
     // 🔥 RESEND EMAIL SEND
     await resend.emails.send({
-      from: "onboarding@resend.dev", // free testing sender
+      from: process.env.EMAIL_FROM,
       to: email,
       subject: "Verification Code - Acadify",
       html: `

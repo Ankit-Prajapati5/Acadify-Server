@@ -19,11 +19,6 @@ import contactRoute from "./routes/contact.route.js";
 import roadmapRoute from "./routes/roadmap.route.js";
 import quizRoutes from "./routes/quiz.route.js";
 
-
-
-
-
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
