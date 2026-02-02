@@ -14,7 +14,7 @@ export const sendContactEmail = async (req, res) => {
 
   try {
     await resend.emails.send({
-      from: "onboarding@resend.dev", // free plan sender
+      from: process.env.EMAIL_FROM,
       to: process.env.EMAIL_USER, // tumhara email jaha message receive hoga
       subject: `New Message from ${name} (Acadify Contact Form)`,
       html: `
