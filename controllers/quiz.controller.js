@@ -13,8 +13,6 @@ export const generateQuiz = async (req, res) => {
         headers: {
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://acadify-server.onrender.com",
-          "X-Title": "Acadify",
         },
         body: JSON.stringify({
           model: "openai/gpt-4o-mini",
