@@ -21,6 +21,13 @@ const questionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // 🔥 प्रत्येक प्रश्न के लिए कैटेगरी (Tab Filtering के लिए ज़रूरी)
+    level: {
+      type: String,
+      enum: ["easy", "medium", "hard"],
+      lowercase: true, // "Hard" को "hard" बना देगा
+      default: "medium",
+    },
   },
   { _id: false }
 );
@@ -58,6 +65,13 @@ const lectureSchema = new mongoose.Schema(
       title: {
         type: String,
         trim: true,
+      },
+      // 🔥 पूरे क्विज़ की ग्लोबल कैटेगरी (पेज लोड पर सही Tab खोलने के लिए)
+      difficulty: {
+        type: String,
+        enum: ["easy", "medium", "hard"],
+        lowercase: true,
+        default: "medium",
       },
       questions: {
         type: [questionSchema],

@@ -19,6 +19,7 @@ import contactRoute from "./routes/contact.route.js";
 import roadmapRoute from "./routes/roadmap.route.js";
 import quizRoutes from "./routes/quiz.route.js";
 
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -67,9 +68,6 @@ app.use(cookieParser());
  */
 connectDB();
  app.get('/', (req, res) => { res.send('Hello, Express.js server is running!'); });
- app.head("/", (req, res) => {
-  res.sendStatus(200);
-});
 
 /**
  * 🚏 API Routes
