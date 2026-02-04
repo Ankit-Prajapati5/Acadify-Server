@@ -16,7 +16,7 @@ export const sendContactEmail = async (req, res) => {
     await resend.emails.send({
       from: process.env.EMAIL_FROM,
       to: process.env.EMAIL_USER, // tumhara email jaha message receive hoga
-      subject: `New Message from ${name} (Acadify Contact Form)`,
+      subject: `New Message from ${name} (Proxima Contact Form)`,
       html: `
         <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee;">
           <h2 style="color: #2563eb;">New Inquiry Received!</h2>

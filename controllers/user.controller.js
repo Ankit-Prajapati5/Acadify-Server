@@ -119,7 +119,7 @@ export const sendOtp = async (req, res) => {
     await resend.emails.send({
       from: process.env.EMAIL_FROM,
       to: email,
-      subject: "Verification Code - Acadify",
+      subject: "Verification Code - Proxima",
       html: `
         <div style="font-family: Arial; padding: 20px;">
           <h2>Your OTP Code</h2>
